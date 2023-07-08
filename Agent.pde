@@ -23,11 +23,11 @@ class Agent {
     x = constrain(x, 0, width);
     y = constrain(y, 0, height);
     
-    //float tempX = speedX;
-    //float tempY = speedY;
-    //float angle = radians(random(-10,10));
-    //speedX = tempX * cos(angle) - tempY * sin(angle);
-    //speedY = tempX * sin(angle) + tempY * cos(angle);
+    float tempX = speedX;
+    float tempY = speedY;
+    float angle = radians(random(-10,10));
+    speedX = tempX * cos(angle) - tempY * sin(angle);
+    speedY = tempX * sin(angle) + tempY * cos(angle);
   }
 
   void display() {
