@@ -3,11 +3,11 @@ class Agent {
   float y = random(0, height);
   float speedX = random(1, 3)*((int)random(0, 2) == 1 ? 1 : -1);
   float speedY = random(1, 3)*((int)random(0, 2) == 1 ? 1 : -1);
-  float pheromone = 1;
+  float pheromone = 50;
   float angleRotate = 60;
   float angleSensor = 90;
   float lengthSensor = 5;
-  float randomRotate = 1;
+  float randomRotate = 10;
   float limitPheramoneRage = 20;
   float stepsPheramoneRage = 20;
 
@@ -16,26 +16,28 @@ class Agent {
     y+=speedY;
     if (x > width || x<0) {
       speedX = -speedX;
+      x+=speedX;
     }
     if (y > height || y<0) {
       speedY = -speedY;
+      y+=speedY;
     }
     x = constrain(x, 0, width);
     y = constrain(y, 0, height);
-    
+
     float tempX = speedX;
     float tempY = speedY;
-    float angle = radians(random(-10,10));
+    float angle = radians(random(-randomRotate, randomRotate));
     speedX = tempX * cos(angle) - tempY * sin(angle);
     speedY = tempX * sin(angle) + tempY * cos(angle);
   }
 
   void display() {
     pushMatrix();
-    
-    stroke(255, 255, 0);
+
+    stroke(255, 255, 255);
     point(x, y);
-    
+
     popMatrix();
   }
 }

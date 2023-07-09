@@ -1,11 +1,11 @@
-int amountAgents = 3000;
-float evaporation = 0.01;
+int amountAgents = 80000;
+int evaporation = 2;
 
 Agent[] agents;
 
 void setup() {
   frameRate(144);
-  size(600, 600, P2D);
+  size(1000, 800, P2D);
   smooth(8);
   background(0);
   agents = new Agent[amountAgents];
@@ -21,17 +21,25 @@ void draw() {
   for (int y=0; y<height; ++y) {
     for (int x=0; x<width; ++x) {
       int loc = x+y*width;
-      int tempEvaporation = (int)map(evaporation, 0, 1, 0, 255);
+      int tempEvaporation = evaporation;
       float r = (red(pixels[loc]) - tempEvaporation);
       float g = (green(pixels[loc]) - tempEvaporation);
       float b = (blue(pixels[loc]) - tempEvaporation);
       pixels[loc] = color(r, g, b);
-      //println(r);
     }
   }
-  updatePixels();
+  //updatePixels();
+
   for (int i=0; i<agents.length; ++i) {
+    int loc = constrain(int(agents[i].y)*width + int(agents[i].x),0,width*height-1);
+    //float r = (red(pixels[loc]) + agents[i].pheromone );
+    float g = (green(pixels[loc]) + agents[i].pheromone);
+    //float b = (blue(pixels[loc]) + agents[i].pheromone);
     agents[i].step();
-    agents[i].display();
+    pixels[loc] = color(0, g, 0);
+
+    //agents[i].display();
   }
+
+  updatePixels();
 }
