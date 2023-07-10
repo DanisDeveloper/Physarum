@@ -1,5 +1,5 @@
-int amountAgents = 80000;
-int evaporation = 2;
+int amountAgents = 100000;
+int evaporation = 5;
 
 Agent[] agents;
 
@@ -31,14 +31,18 @@ void draw() {
   //updatePixels();
 
   for (int i=0; i<agents.length; ++i) {
-    int loc = constrain(int(agents[i].y)*width + int(agents[i].x),0,width*height-1);
+    int loc = constrain(int(agents[i].y)*width + int(agents[i].x), 0, width*height-1);
     //float r = (red(pixels[loc]) + agents[i].pheromone );
     float g = (green(pixels[loc]) + agents[i].pheromone);
     //float b = (blue(pixels[loc]) + agents[i].pheromone);
-    agents[i].step();
     pixels[loc] = color(0, g, 0);
+    //pixels[loc] = color(0, 255, 0); 
+    //pixels[loc] = color(0, 0, b);
+    //pixels[loc] = color(r, 0, 0);
 
+    agents[i].step();
     //agents[i].display();
+    
   }
 
   updatePixels();
