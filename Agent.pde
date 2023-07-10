@@ -1,22 +1,22 @@
 class Agent {
-  float x = random(0, width);
-  float y = random(0, height);
-  float speedX = random(1, 3)*((int)random(0, 2) == 1 ? 1 : -1);
-  float speedY = random(1, 3)*((int)random(0, 2) == 1 ? 1 : -1);
-  float pheromone = 10;
+  float x = random(0, width-1);
+  float y = random(0, height-1);
+  float speedX = random(1, 4)*((int)random(0, 2) == 1 ? 1 : -1);
+  float speedY = random(1, 4)*((int)random(0, 2) == 1 ? 1 : -1);
+  float pheromone = 15;
   float angleRotate = 15;
-  float angleSensor = 40;
-  float lengthSensor = 10;
+  float angleSensor = 60;
+  float lengthSensor = 12;
   float sensorDirectX;
   float sensorDirectY;
   float sensorLeftX;
   float sensorLeftY;
   float sensorRightX;
   float sensorRightY;
-  float randomRotate = 3;
+  float randomRotate = 5;
   float limitPheramoneRage = 20;
   float stepsPheramoneRage = 20;
-  boolean reactOnPheramone = (random(0, 1) < 0.8 ? true : false);
+  boolean reactOnPheramone = (random(0, 1) < 0.95 ? true : false);
 
   void step() {
 
@@ -28,7 +28,7 @@ class Agent {
     float  radAngleSensor = radians(angleSensor);
     sensorLeftX = sensorDirectX*cos(-radAngleSensor) - sensorDirectY*sin(-radAngleSensor);
     sensorLeftY = sensorDirectX * sin(-radAngleSensor) + sensorDirectY * cos(-radAngleSensor);
-    sensorRightX = sensorDirectX*cos(radAngleSensor) - sensorDirectY*sin(-radAngleSensor);
+    sensorRightX = sensorDirectX*cos(radAngleSensor) - sensorDirectY*sin(radAngleSensor);
     sensorRightY = sensorDirectX * sin(radAngleSensor) + sensorDirectY * cos(radAngleSensor);
     float directBright = brightness(pixels[(int)constrain(sensorDirectY+y, 0, height-1)*width + (int)constrain(sensorDirectX+x, 0, width-1)]);
     float leftBright = brightness(pixels[(int)constrain(sensorLeftY+y, 0, height-1)*width + (int)constrain(sensorLeftX+x, 0, width-1)]);
@@ -43,9 +43,9 @@ class Agent {
       }
     } else {
       if (rightBright < leftBright && rightBright < directBright) {
-        angle+=rightBright/255*angleRotate;
+        angle+=angleRotate;
       } else if (leftBright < directBright && leftBright < rightBright) {
-        angle-=leftBright/255*angleRotate;
+        angle-=angleRotate;
       }
     }
 
@@ -60,8 +60,8 @@ class Agent {
       speedY = -speedY;
       y+=speedY;
     }
-    x = constrain(x, 0, width);
-    y = constrain(y, 0, height);
+    x = constrain(x, 0, width-1);
+    y = constrain(y, 0, height-1);
 
 
 
