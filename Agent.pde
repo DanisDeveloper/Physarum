@@ -1,22 +1,22 @@
 class Agent {
   float x = random(0, width-1);
   float y = random(0, height-1);
-  float speedX = random(1, 4)*((int)random(0, 2) == 1 ? 1 : -1);
-  float speedY = random(1, 4)*((int)random(0, 2) == 1 ? 1 : -1);
+  float speedX = random(2, 5)*((int)random(0, 2) == 1 ? 1 : -1);
+  float speedY = random(2, 5)*((int)random(0, 2) == 1 ? 1 : -1);
   float pheromone = 15;
   float angleRotate = 15;
-  float angleSensor = 60;
-  float lengthSensor = 12;
+  float angleSensor = 30;
+  float lengthSensor = 15;
   float sensorDirectX;
   float sensorDirectY;
   float sensorLeftX;
   float sensorLeftY;
   float sensorRightX;
   float sensorRightY;
-  float randomRotate = 5;
+  float randomRotate = 3;
   float limitPheramoneRage = 20;
   float stepsPheramoneRage = 20;
-  boolean reactOnPheramone = (random(0, 1) < 0.95 ? true : false);
+  boolean reactOnPheramone = (random(0, 1) < 0.9 ? true : false);
 
   void step() {
 
@@ -42,11 +42,12 @@ class Agent {
         angle-=leftBright/255*angleRotate;
       }
     } else {
-      if (rightBright < leftBright && rightBright < directBright) {
-        angle+=angleRotate;
-      } else if (leftBright < directBright && leftBright < rightBright) {
-        angle-=angleRotate;
-      }
+      //if (rightBright < leftBright && rightBright < directBright) {
+      //  angle+=angleRotate;
+      //} else if (leftBright < directBright && leftBright < rightBright) {
+      //  angle-=angleRotate;
+      //}
+      angle += randomRotate;
     }
 
     // движение агента
