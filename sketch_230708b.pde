@@ -1,5 +1,5 @@
 int amountAgents = 100000;
-int evaporation = 5;
+int evaporation = 1;
 
 Agent[] agents;
 
@@ -35,7 +35,9 @@ void draw() {
     //float r = (red(pixels[loc]) + agents[i].pheromone );
     float g = (green(pixels[loc]) + agents[i].pheromone);
     //float b = (blue(pixels[loc]) + agents[i].pheromone);
-    pixels[loc] = color(0, g, 0);
+    
+    if(agents[i].reactOnPheramone)
+      pixels[loc] = color(0, g, 0);
     //pixels[loc] = color(0, 255, 0); 
     //pixels[loc] = color(0, 0, b);
     //pixels[loc] = color(r, 0, 0);

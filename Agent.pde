@@ -3,25 +3,25 @@ class Agent {
   float y = random(0, height);
   float speedX = random(1, 3)*((int)random(0, 2) == 1 ? 1 : -1);
   float speedY = random(1, 3)*((int)random(0, 2) == 1 ? 1 : -1);
-  float pheromone = 50;
-  float angleRotate = 90;
-  float angleSensor = 30;
-  float lengthSensor = 1;
+  float pheromone = 10;
+  float angleRotate = 15;
+  float angleSensor = 40;
+  float lengthSensor = 10;
   float sensorDirectX;
   float sensorDirectY;
   float sensorLeftX;
   float sensorLeftY;
   float sensorRightX;
   float sensorRightY;
-  float randomRotate = 10;
+  float randomRotate = 3;
   float limitPheramoneRage = 20;
   float stepsPheramoneRage = 20;
+  boolean reactOnPheramone = (random(0, 1) < 0.8 ? true : false);
 
   void step() {
 
-    float angle = random(-randomRotate, randomRotate);
+    float angle = random(0, randomRotate);
 
-    //Сенсоры
     float normSpeed = sqrt(speedX*speedX + speedY*speedY);
     sensorDirectX = speedX/normSpeed * lengthSensor;
     sensorDirectY = speedY/normSpeed * lengthSensor;
@@ -30,15 +30,23 @@ class Agent {
     sensorLeftY = sensorDirectX * sin(-radAngleSensor) + sensorDirectY * cos(-radAngleSensor);
     sensorRightX = sensorDirectX*cos(radAngleSensor) - sensorDirectY*sin(-radAngleSensor);
     sensorRightY = sensorDirectX * sin(radAngleSensor) + sensorDirectY * cos(radAngleSensor);
-    float directBright = brightness(pixels[(int)constrain(sensorDirectY+y,0,height-1)*width + (int)constrain(sensorDirectX+x,0,width-1)]);
-    float leftBright = brightness(pixels[(int)constrain(sensorLeftY+y,0,height-1)*width + (int)constrain(sensorLeftX+x,0,width-1)]);
-    float rightBright = brightness(pixels[(int)constrain(sensorRightY+y,0,height-1)*width + (int)constrain(sensorRightX+x,0,width-1)]);
-    if (rightBright > leftBright && rightBright > directBright) {
-      //println("right");
-      angle+=rightBright/255*angleRotate;
-    } else if (leftBright > directBright && leftBright > rightBright) {
-      //println("left");
-      angle-=leftBright/255*angleRotate;
+    float directBright = brightness(pixels[(int)constrain(sensorDirectY+y, 0, height-1)*width + (int)constrain(sensorDirectX+x, 0, width-1)]);
+    float leftBright = brightness(pixels[(int)constrain(sensorLeftY+y, 0, height-1)*width + (int)constrain(sensorLeftX+x, 0, width-1)]);
+    float rightBright = brightness(pixels[(int)constrain(sensorRightY+y, 0, height-1)*width + (int)constrain(sensorRightX+x, 0, width-1)]);
+    //Сенсоры
+    //float limit = 200;
+    if (reactOnPheramone) {
+      if (rightBright > leftBright && rightBright > directBright) {
+        angle+=rightBright/255*angleRotate;
+      } else if (leftBright > directBright && leftBright > rightBright) {
+        angle-=leftBright/255*angleRotate;
+      }
+    } else {
+      if (rightBright < leftBright && rightBright < directBright) {
+        angle+=rightBright/255*angleRotate;
+      } else if (leftBright < directBright && leftBright < rightBright) {
+        angle-=leftBright/255*angleRotate;
+      }
     }
 
     // движение агента
