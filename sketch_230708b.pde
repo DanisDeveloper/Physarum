@@ -1,11 +1,11 @@
-int amountAgents = 50000;
-int evaporation = 1;
+int amountAgents = 40000;
+int evaporation = 4;
 
 Agent[] agents;
 
 void setup() {
   frameRate(144);
-  size(600, 600, P2D);
+  size(400, 400, P2D);
   smooth(8);
   background(0);
   agents = new Agent[amountAgents];

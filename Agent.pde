@@ -1,8 +1,8 @@
 class Agent {
   float x = random(0, width-1);
   float y = random(0, height-1);
-  float speedX = random(2, 5)*((int)random(0, 2) == 1 ? 1 : -1);
-  float speedY = random(2, 5)*((int)random(0, 2) == 1 ? 1 : -1);
+  float speedX = random(1, 5)*((int)random(0, 2) == 1 ? 1 : -1);
+  float speedY = random(1, 5)*((int)random(0, 2) == 1 ? 1 : -1);
   float pheromone = 15;
   float angleRotate = 15;
   float angleSensor = 30;
@@ -13,14 +13,15 @@ class Agent {
   float sensorLeftY;
   float sensorRightX;
   float sensorRightY;
-  float randomRotate = 3;
+  float randomRotate = random(2,5);
   float limitPheramoneRage = 20;
   float stepsPheramoneRage = 20;
   boolean reactOnPheramone = (random(0, 1) < 0.9 ? true : false);
+  int signRotate = (random(0, 1) < 0.6 ? 1 : -1);
 
   void step() {
 
-    float angle = random(0, randomRotate);
+    float angle = random(-randomRotate, randomRotate);
 
     float normSpeed = sqrt(speedX*speedX + speedY*speedY);
     sensorDirectX = speedX/normSpeed * lengthSensor;
@@ -35,20 +36,22 @@ class Agent {
     float rightBright = brightness(pixels[(int)constrain(sensorRightY+y, 0, height-1)*width + (int)constrain(sensorRightX+x, 0, width-1)]);
     //Сенсоры
     //float limit = 200;
-    if (reactOnPheramone) {
+
+    if (random(0, 1) < 0.85) {
       if (rightBright > leftBright && rightBright > directBright) {
         angle+=rightBright/255*angleRotate;
       } else if (leftBright > directBright && leftBright > rightBright) {
-        angle-=leftBright/255*angleRotate;
+        angle-= leftBright/255*angleRotate;
       }
     } else {
-      //if (rightBright < leftBright && rightBright < directBright) {
-      //  angle+=angleRotate;
-      //} else if (leftBright < directBright && leftBright < rightBright) {
-      //  angle-=angleRotate;
-      //}
-      angle += randomRotate;
+      if (rightBright < leftBright && rightBright < directBright) {
+        angle+=rightBright/255*angleRotate;
+      } else if (leftBright < directBright && leftBright < rightBright) {
+        angle-= leftBright/255*angleRotate;
+      }
     }
+    angle += randomRotate * signRotate;
+
 
     // движение агента
     x+=speedX;
